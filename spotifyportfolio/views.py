@@ -1,38 +1,70 @@
-from spotifyportfolio import app
-from spotifyportfolio.models import User, Playlist, FavoritePlaylist
+
+from spotifyportfolio import app, bcrypt
 from spotifyportfolio import sp, sp_oauth
 
-from flask import render_template, redirect, url_for, request, session, jsonify
+from flask import render_template, redirect, url_for, request, session, jsonify, flash
 from spotifyportfolio import cache_handler
+from spotifyportfolio.forms import RegistrationForm, LoginForm
+from spotifyportfolio.models import User
+
+from flask_login import login_user, current_user, logout_user, login_required
+
+from spotifyportfolio import db
+
 
 @app.route('/')
 def home():
     # set up this as method
-    if not sp_oauth.validate_token(cache_handler.get_cached_token()):
-        auth_url = sp_oauth.get_authorize_url()
-        return redirect(auth_url)
-    return render_template('index.html')
+    # if not sp_oauth.validate_token(cache_handler.get_cached_token()):
+    #     auth_url = sp_oauth.get_authorize_url()
+    #     return redirect(auth_url)
+    return render_template('home.html')
 
 
 @app.route('/callback')
 def callback():
     sp_oauth.get_access_token(request.args['code'])
-    return redirect(url_for('base_page'))
+    return redirect(url_for('setup'))
 
 
-@app.route('/base_page')
-def base_page():
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
+        flash('Your account has been created! You are now able to log in', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
+        else:
+            flash('Login Unsuccessful. Please check email and password', 'danger')
+    return render_template('login.html', title='Login', form=form)
+
+
+@app.route('/setup')
+def setup():
     if not sp_oauth.validate_token(cache_handler.get_cached_token()):
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
 
-    session_fav_song = session.get('favorite_song')
-    session_fav_album = session.get('favorite_album')
-
-    if session_fav_song and session_fav_album:
-        return render_template('profile.html', favourite_song=session_fav_song, favourite_album=session_fav_album)
-    else:
-        return render_template('index.html')
+    return render_template('setup.html')
 
 
 @app.route('/search_track')
@@ -72,7 +104,6 @@ def favorite_song():
     }
 
     session['favorite_song'] = song_info
-    session['song_chosen'] = True
 
     return jsonify(song_info)
 
@@ -89,11 +120,6 @@ def favorite_album():
     session['favorite_album'] = album_info
 
     return jsonify(album_info)
-
-
-def user_playlists():
-    playlists = sp.current_user_playlists()
-    return render_template('user_playlists.html', playlists=playlists['items'])
 
 
 @app.route('/logout')
