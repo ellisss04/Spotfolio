@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <link rel="stylesheet" href="../static/styles/songResults.css">
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="../static/styles/searchBar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    {% if favourite_song %}
+    <div class="container" id="favourite_song">
+        <iframe src="https://open.spotify.com/embed/track/{{ favourite_song['song_id'] }}" width="50%" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
+    {% endif %}
+
+    {% if favourite_album %}
+    <div class="container" id="favourite_album">
+        <iframe src="https://open.spotify.com/embed/album/{{ favourite_album['album_id'] }}" width="50%" height="350" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
+    {% endif %}
+</body>
+</html>

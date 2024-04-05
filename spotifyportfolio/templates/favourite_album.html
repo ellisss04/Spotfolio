@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<title>Your Favorite Album</title>
+<body>
+    {% if album_info %}
+    <div class="container">
+     <iframe src="https://open.spotify.com/embed/album/{{album_info['album_id']}}" width="50%" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    {% else %}
+      <p>album not found</p>
+    </div>
+    {% endif %}
+</body>
+

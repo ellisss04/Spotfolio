@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<title>Your Favorite Song</title>
+<body>
+    {% if song_info %}
+    <div class="container">
+      <iframe src="https://open.spotify.com/embed/track/{{ song_info['song_id'] }}" width="50%" height="300" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    {% else %}
+      <p>song not found</p>
+    </div>
+    {% endif %}
+</body>
+

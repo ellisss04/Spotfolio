@@ -1,0 +1,51 @@
+function scrollToAlbumSection() {
+    $('html, body').animate({
+        scrollTop: $('#albumSelection').offset().top
+    }, 2000); // Adjust the duration as needed
+}
+
+
+$(document).ready(function() {
+    $('#albumInput').on('input', function() {
+        var query = $(this).val();
+        if (query.length >= 3) {
+            $.ajax({
+                url: '/search_album',
+                method: 'GET',
+                data: { query: query },  // Send the query as a parameter
+                success: function(data) {
+                    displaySearchResults(data);
+                    // scrollToNextSection();
+                }
+            });
+        } else {
+            $('#albumResults').empty();
+        }
+    });
+
+    function displaySearchResults(results) {
+        $('#albumResults').empty();
+        results.forEach(function(result) {
+            var listItem = $('<li>').text(result.name + ' - ' + result.artist);  // Assuming 'name' is the album name
+            listItem.on('click', function() {
+                // Send a POST request to /favourite_album route with the selected album's information
+                $.ajax({
+                    url: '/favourite_album',
+                    method: 'POST',
+                    data: {
+                        album_name: result.name,  // Pass the album name
+                        album_artist: result.artist,
+                        album_id: result.id       // Pass the album ID
+                    },
+                    success: function(response) {
+                        // Update the content with the response from favourite_album route
+                        console.log(response.album_id);
+                        var spotifyLink = "https://open.spotify.com/embed/album/" + response.album_id;
+                        $('#favourite_album iframe').attr('src', spotifyLink);
+                    }
+                });
+            });
+            $('#albumResults').append(listItem);
+        });
+    }
+});

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../static/styles/songResults.css">
+    <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="../static/styles/searchBar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Selector</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../static/scripts/searchSong.js"></script>
+    <script src="../static/scripts/searchAlbum.js"></script>
+</head>
+<body>
+
+<div class="title-container">
+    <h1 class="title">Select your favourite song</h1>
+    <div class="searchInput">
+        <input id="songInput" type="text" placeholder="Search for a song...">
+        <div class ="search"></div>
+    </div>
+    <ul id="songResults"></ul>
+</div>
+    <!-- Container to display the selected song -->
+        <div class="container" id="favourite_song">
+        <iframe src="" width="50%" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
+
+<div class="title-container" id="albumSelection">
+    <h1 class="title">Select your favourite album</h1>
+    <div class="searchInput">
+        <input id="albumInput" type="text" placeholder="Search for a song...">
+        <div class ="search"></div>
+    </div>
+    <ul id="albumResults"></ul>
+</div>
+    <!-- Container to display the selected album -->
+    <div class="container" id="favourite_album">
+        <iframe src="" width="50%" height="350" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
+
+</body>
+</html>

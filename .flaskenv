@@ -1,0 +1,3 @@
+#.flaskenv
+FLASK_APP=spotifyportfolio
+FLASK_ENV=development
