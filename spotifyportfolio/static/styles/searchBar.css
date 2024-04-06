@@ -146,6 +146,12 @@ body {
   margin-top: 5px;
 }
 
+#Submit{
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
 #songResults, #albumResults {
   list-style-type: none;
   padding: 0;

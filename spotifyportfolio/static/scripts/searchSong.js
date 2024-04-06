@@ -13,7 +13,6 @@ $(document).ready(function() {
                 method: 'GET',
                 data: { query: query },
                 success: function(data) {
-                    console.log(data);
                     displaySearchResults(data);
                 }
             });

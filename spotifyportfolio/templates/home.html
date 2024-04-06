@@ -1,6 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
 <div>
-    <h1>HOME PAGE</h1>
+    {% if current_user.is_setup %}
+        <div class="article-content">
+            <div class="container" id="favourite_song">
+                {% for song_id in song_ids %}
+                <iframe src="https://open.spotify.com/embed/track/{{ song_id }}" width="50%" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                {% endfor %}
+            </div>
+            <div class="container" id="favourite_album">
+                {% for album_id in album_ids %}
+                <iframe src="https://open.spotify.com/embed/album/{{ album_id }}" width="50%" height="350" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <h1>HOME PAGE</h1>
+    {% endif %}
 </div>
+
 {% endblock content %}

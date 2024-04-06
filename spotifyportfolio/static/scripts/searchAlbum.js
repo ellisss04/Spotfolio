@@ -1,6 +1,6 @@
-function scrollToAlbumSection() {
+function scrollToSubmit() {
     $('html, body').animate({
-        scrollTop: $('#albumSelection').offset().top
+        scrollTop: $('#Submit').offset().top
     }, 2000); // Adjust the duration as needed
 }
 
@@ -42,6 +42,8 @@ $(document).ready(function() {
                         console.log(response.album_id);
                         var spotifyLink = "https://open.spotify.com/embed/album/" + response.album_id;
                         $('#favourite_album iframe').attr('src', spotifyLink);
+                        $('#Submit').show();
+                        scrollToSubmit();
                     }
                 });
             });
