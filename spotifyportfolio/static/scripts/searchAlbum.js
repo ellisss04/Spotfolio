@@ -1,6 +1,6 @@
 function scrollToSubmit() {
     $('html, body').animate({
-        scrollTop: $('#Submit').offset().top
+        scrollTop: $('#Submit-hidden').offset().top
     }, 2000); // Adjust the duration as needed
 }
 
@@ -42,7 +42,7 @@ $(document).ready(function() {
                         console.log(response.album_id);
                         var spotifyLink = "https://open.spotify.com/embed/album/" + response.album_id;
                         $('#favourite_album iframe').attr('src', spotifyLink);
-                        $('#Submit').show();
+                        $('#Submit-hidden').show();
                         scrollToSubmit();
                     }
                 });

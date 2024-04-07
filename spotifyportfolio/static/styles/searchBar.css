@@ -146,8 +146,15 @@ body {
   margin-top: 5px;
 }
 
-#Submit{
+#Submit-hidden{
   display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+#Submit{
+  padding: 50px 20px;
+  display: flex;
   justify-content: center;
   align-items: center;
 }

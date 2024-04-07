@@ -73,11 +73,36 @@ def setup():
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
 
-    is_setup = current_user.is_setup
-    if current_user.is_authenticated and not is_setup:
-        return render_template('setup.html')
+    if current_user.is_authenticated:
+        if current_user.is_setup:
+            # User is already set up, return JSON response for confirmation
+            return redirect(url_for('setup_confirm'))
+        else:
+            # User is not set up yet, proceed with setup
+            return render_template('setup.html')
     else:
         return redirect(url_for('login'))
+
+
+@app.route('/setup_confirm')
+def setup_confirm():
+    try:
+        favourite_songs = FavoriteSong.query.filter_by(user_id=current_user.id).all()
+        for favourite_song in favourite_songs:
+            db.session.delete(favourite_song)
+
+        favourite_albums = FavoriteAlbum.query.filter_by(user_id=current_user.id).all()
+
+        for favourite_album in favourite_albums:
+            db.session.delete(favourite_album)
+
+        current_user.is_setup = False
+        db.session.commit()
+        return render_template('setup.html')
+    except Exception as e:
+        db.session.rollback()
+        flash("An error occurred while attempting to remove your preferences")
+    return redirect(url_for('home'))
 
 
 @app.route('/search_track')
