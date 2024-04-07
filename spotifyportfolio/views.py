@@ -95,9 +95,12 @@ def setup_confirm():
             db.session.delete(favourite_song)
 
         favourite_albums = FavoriteAlbum.query.filter_by(user_id=current_user.id).all()
-
         for favourite_album in favourite_albums:
             db.session.delete(favourite_album)
+
+        favourite_artists = FavoriteArtist.query.filter_by(user_id=current_user.id).all()
+        for favourite_artist in favourite_artists:
+            db.session.delete(favourite_artist)
 
         current_user.is_setup = False
         db.session.commit()
