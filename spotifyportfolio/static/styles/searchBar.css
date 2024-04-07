@@ -12,10 +12,6 @@ html, body {
   height: 100%;
 }
 
-body {
-  background: #252525;
-}
-
 .searchInput {
   position: relative;
   margin: auto;
@@ -141,10 +137,11 @@ body {
   font-weight: bolder;
 }
 
-#albumSelection{
+#albumSelection, #artistSelection{
   display: none;
   margin-top: 5px;
 }
+
 
 #Submit-hidden{
   display: none;
@@ -153,13 +150,15 @@ body {
 }
 
 #Submit{
+  width: 140px;
+  height: 300px;
   padding: 50px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#songResults, #albumResults {
+#songResults, #albumResults, #artistResults {
   list-style-type: none;
   padding: 0;
   margin-top: 10px; /* Adjust as needed */
@@ -167,7 +166,7 @@ body {
   font-family: Arial, sans-serif;
 }
 
-#songResults li, #albumResults li {
+#songResults li, #albumResults li, #artistResults li {
   background-color: #535353;
   padding: 10px;
   margin-bottom: 5px;
@@ -175,11 +174,11 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#songResults li:hover, #albumResults li:hover {
+#songResults li:hover, #albumResults li:hover, #artistResults li:hover {
   background-color: #b3b3b3;
   cursor: pointer;
 }
 
-#songResults li:last-child, #albumResults li:last-child {
+#songResults li:last-child, #albumResults li:last-child #artistResults li:last-child {
   margin-bottom: 0;
 }

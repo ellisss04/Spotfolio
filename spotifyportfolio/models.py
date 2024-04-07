@@ -39,6 +39,7 @@ class FavoriteSong(db.Model):
 class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    artist_id = db.Column(db.String(40))
     # Other artist-related fields such as popularity, followers, etc.
 
 

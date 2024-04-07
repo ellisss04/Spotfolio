@@ -5,21 +5,28 @@
             <div class="container-content">
                 <div id="favourite_song">
                     {% for song_id in song_ids %}
-                    <iframe src="https://open.spotify.com/embed/track/{{ song_id }}" width="700" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                    <iframe src="https://open.spotify.com/embed/track/{{ song_id }}" width="700" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     {% endfor %}
                 </div>
             </div>
             <div class="container-content">
                 <div id="favourite_album">
                     {% for album_id in album_ids %}
-                    <iframe src="https://open.spotify.com/embed/album/{{ album_id }}" width="700" height="350" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                    <iframe src="https://open.spotify.com/embed/album/{{ album_id }}" width="700" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="container-content">
+                <div id="favourite_artist">
+                    {% for artist_id in artist_ids %}
+                    <iframe src="https://open.spotify.com/embed/artist/{{ artist_id }}" width="700" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     {% endfor %}
                 </div>
             </div>
         </div>
     {% else %}
         <div id="Submit" >
-            <a class="button-33-home" href="{{ url_for('setup') }}">SETUP</a>
+            <a class="button-74" href="{{ url_for('setup') }}">SETUP</a>
         </div>
     {% endif %}
 

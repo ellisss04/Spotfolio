@@ -43,8 +43,12 @@ body{
     color: white;
 }
 
-#favourite_song, #favourite_album{
+#favourite_song, #favourite_album, #favourite_artist{
     margin-left: 50%;
 }
 
+#navbar{
+    top: 0;
+    transition: 0.4s;
+}
 

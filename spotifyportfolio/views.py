@@ -3,10 +3,10 @@ import flask_login
 from spotifyportfolio import app, bcrypt
 from spotifyportfolio import sp, sp_oauth
 
-from flask import render_template, redirect, url_for, request, session, jsonify, flash
+from flask import render_template, redirect, url_for, request, session, jsonify, flash, logging
 from spotifyportfolio import cache_handler
 from spotifyportfolio.forms import RegistrationForm, LoginForm
-from spotifyportfolio.models import User, Song, FavoriteSong, load_user, FavoriteAlbum, Album
+from spotifyportfolio.models import User, Song, FavoriteSong, load_user, FavoriteAlbum, Album, Artist, FavoriteArtist
 
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -24,7 +24,10 @@ def home():
 
         favorite_albums = FavoriteAlbum.query.filter_by(user_id=current_user.id).all()
         album_ids = [favorite.album_id for favorite in favorite_albums]
-        return render_template('home.html', song_ids=song_ids, album_ids=album_ids)
+
+        favorite_artists = FavoriteArtist.query.filter_by(user_id=current_user.id).all()
+        artist_ids = [favorite.artist_id for favorite in favorite_artists]
+        return render_template('home.html', song_ids=song_ids, album_ids=album_ids, artist_ids=artist_ids)
     else:
         # Handle the case where the user is not authenticated
         return render_template('home.html')
@@ -132,6 +135,21 @@ def search_album():
         return jsonify([])
 
 
+@app.route('/search_artist')
+def search_artist():
+    query = request.args.get('query')
+
+    if query:
+        results = sp.search(q=query, type='artist', limit=5)
+
+        search_results = [{'artist': artist['name'],  'id': artist['id']} for
+                          artist in
+                          results['artists']['items']]
+        return jsonify(search_results)
+    else:
+        return jsonify([])
+
+
 @app.route('/favourite_song', methods=['POST'])
 def favorite_song():
     # Get the song's information from the POST request
@@ -145,7 +163,7 @@ def favorite_song():
         song_id = song_info['song_id']
 
         user = User.query.get(int(user_id))
-        song = Song.query.get(song_id)
+        song = Song.query.filter_by(song_id=song_id).first()
 
         if user is None:
             return jsonify({'error': 'User not found'}), 404
@@ -174,7 +192,7 @@ def favorite_album():
         album_id = album_info['album_id']
 
         user = User.query.get(int(user_id))
-        album = Album.query.get(album_id)
+        album = Album.query.filter_by(album_id=album_id).first()
 
         if user is None:
             return jsonify({'error': 'User not found'}), 404
@@ -189,6 +207,34 @@ def favorite_album():
     return jsonify(album_info)
 
 
+@app.route('/favourite_artist', methods=['POST'])
+def favorite_artist():
+    # Get the artist's information from the POST request
+    artist_info = {
+        'artist_name': request.form['artist_name'],
+        'artist_id': request.form['artist_id'],
+    }
+
+    if current_user.is_authenticated:
+        user_id = current_user.get_id()
+        artist_id = artist_info['artist_id']
+
+        user = User.query.get(int(user_id))
+        artist = Artist.query.filter_by(artist_id=artist_id).first()
+
+        if user is None:
+            return jsonify({'error': 'User not found'}), 404
+
+        if artist is None:
+            add_artist = Artist(name=artist_info['artist_name'], artist_id=artist_info['artist_id'])
+            db.session.add(add_artist)
+            db.session.commit()
+
+        session['artist_id'] = artist_id
+
+    return jsonify(artist_info)
+
+
 @app.route('/submit_setup', methods=['POST'])
 def submit_setup():
     if request.method == 'POST':
@@ -196,6 +242,7 @@ def submit_setup():
         user_id = current_user.get_id()
         album_id = session['album_id']
         song_id = session['song_id']
+        artist_id = session['artist_id']
 
         current_user.is_setup = True
 
@@ -203,6 +250,8 @@ def submit_setup():
         db.session.add(favorite_song)
         favorite_album = FavoriteAlbum(user_id=user_id, album_id=album_id)
         db.session.add(favorite_album)
+        favorite_artist = FavoriteArtist(user_id=user_id, artist_id=artist_id)
+        db.session.add(favorite_artist)
         db.session.commit()
     else:
         session.clear()
