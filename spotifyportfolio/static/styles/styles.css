@@ -9,6 +9,14 @@ body{
   align-items: center;
 }
 
+.container-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    width: 100%;
+}
+
+
 .title-container{
     border-radius: 10px;
     background-color: #212121;
@@ -17,7 +25,7 @@ body{
     padding: 10px;
     margin: 10% auto 10px;
     color: white;
-    text-align: center;.
+    text-align: center;
 }
 
 .title {
@@ -33,5 +41,14 @@ body{
     background-color: #535353;
     font-family: Arial, sans-serif;
     color: white;
+}
+
+#favourite_song, #favourite_album, #favourite_artist{
+    margin-left: 50%;
+}
+
+#navbar{
+    top: 0;
+    transition: 0.4s;
 }
 

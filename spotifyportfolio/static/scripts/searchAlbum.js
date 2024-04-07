@@ -1,6 +1,6 @@
-function scrollToAlbumSection() {
+function scrollToArtist() {
     $('html, body').animate({
-        scrollTop: $('#albumSelection').offset().top
+        scrollTop: $('#artistSelection').offset().top
     }, 2000); // Adjust the duration as needed
 }
 
@@ -8,7 +8,7 @@ function scrollToAlbumSection() {
 $(document).ready(function() {
     $('#albumInput').on('input', function() {
         var query = $(this).val();
-        if (query.length >= 3) {
+        if (query.length >= 0) {
             $.ajax({
                 url: '/search_album',
                 method: 'GET',
@@ -39,9 +39,10 @@ $(document).ready(function() {
                     },
                     success: function(response) {
                         // Update the content with the response from favourite_album route
-                        console.log(response.album_id);
                         var spotifyLink = "https://open.spotify.com/embed/album/" + response.album_id;
                         $('#favourite_album iframe').attr('src', spotifyLink);
+                        $('#artistSelection').show();
+                        scrollToArtist();
                     }
                 });
             });

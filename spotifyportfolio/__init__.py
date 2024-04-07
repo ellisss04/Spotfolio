@@ -12,7 +12,7 @@ from spotipy.oauth2 import SpotifyOAuth
 from spotipy.cache_handler import FlaskSessionCacheHandler
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config["SECRET_KEY"] = os.urandom(64)
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///site.db'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

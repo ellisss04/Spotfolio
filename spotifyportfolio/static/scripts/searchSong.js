@@ -1,4 +1,4 @@
-function scrollToAlbumSection() {
+function scrollToAlbum() {
     $('html, body').animate({
         scrollTop: $('#albumSelection').offset().top
     }, 2000); // Adjust the duration as needed
@@ -7,13 +7,12 @@ function scrollToAlbumSection() {
 $(document).ready(function() {
     $('#songInput').on('input', function() {
         var query = $(this).val();
-        if (query.length >= 3) {
+        if (query.length >= 0) {
             $.ajax({
                 url: '/search_track',
                 method: 'GET',
                 data: { query: query },
                 success: function(data) {
-                    console.log(data);
                     displaySearchResults(data);
                 }
             });
@@ -41,7 +40,7 @@ $(document).ready(function() {
                         var spotifyLink = "https://open.spotify.com/embed/track/" + response.song_id;
                         $('#favourite_song iframe').attr('src', spotifyLink);
                         $('#albumSelection').show();
-                        scrollToAlbumSection();
+                        scrollToAlbum();
                     }
                 });
             });

@@ -5,39 +5,69 @@
     <link rel="stylesheet" href="../static/styles/songResults.css">
     <link rel="stylesheet" href="../static/styles/styles.css">
     <link rel="stylesheet" href="../static/styles/searchBar.css">
+    <link rel="stylesheet" href="../static/styles/main.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Song Selector</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../static/scripts/searchSong.js"></script>
     <script src="../static/scripts/searchAlbum.js"></script>
+    <script src="../static/scripts/searchArtist.js"></script>
+
 </head>
 <body>
 
-<div class="title-container">
-    <h1 class="title">Select your favourite song</h1>
-    <div class="searchInput">
-        <input id="songInput" type="text" placeholder="Search for a song...">
-        <div class ="search"></div>
+    <div class="title-container">
+        <h1 class="title">Select your favourite song</h1>
+        <div class="searchInput">
+            <input id="songInput" type="text" placeholder="Search for a song...">
+            <div class ="search"></div>
+        </div>
+        <ul id="songResults"></ul>
     </div>
-    <ul id="songResults"></ul>
-</div>
     <!-- Container to display the selected song -->
-        <div class="container" id="favourite_song">
-        <iframe src="" width="50%" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    <div class="container-content">
+        <div id="favourite_song" style="margin-left: 0">
+            <iframe src="" width="700" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
     </div>
 
-<div class="title-container" id="albumSelection">
-    <h1 class="title">Select your favourite album</h1>
-    <div class="searchInput">
-        <input id="albumInput" type="text" placeholder="Search for a song...">
-        <div class ="search"></div>
+    <div class="title-container" id="albumSelection">
+        <h1 class="title">Select your favourite album</h1>
+        <div class="searchInput">
+            <input id="albumInput" type="text" placeholder="Search for an album...">
+            <div class ="search"></div>
+        </div>
+        <ul id="albumResults"></ul>
     </div>
-    <ul id="albumResults"></ul>
-</div>
-    <!-- Container to display the selected album -->
-    <div class="container" id="favourite_album">
-        <iframe src="" width="50%" height="350" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        <!-- Container to display the selected album -->
+    <div class="container-content">
+        <div id="favourite_album" style="margin-left: 0;">
+            <iframe src="" width="700" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
+    </div>
+
+    <div class="title-container" id="artistSelection">
+        <h1 class="title">Select your favourite artist</h1>
+        <div class="searchInput">
+            <input id="artistInput" type="text" placeholder="Search for an artist...">
+            <div class ="search"></div>
+        </div>
+        <ul id="artistResults"></ul>
+    </div>
+
+        <!-- Container to display the selected album -->
+    <div class="container-content">
+        <div id="favourite_artist" style="margin-left: 0;">
+            <iframe src="" width="700" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
+    </div>
+    <div id="Submit-hidden">
+        <div class="container">
+            <form action="{{ url_for('submit_setup') }}" method="POST">
+            <button class="button-33" role="button" type="submit">Confirm</button>
+            </form>
+        </div>
     </div>
 
 </body>

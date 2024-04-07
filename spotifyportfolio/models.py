@@ -13,8 +13,12 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    is_setup = db.Column(db.Boolean, default=False, nullable=False)
+
     # favorite_songs = db.relationship('Song', secondary='favorite_song', backref='users')
     # favorite_albums = db.relationship('Album', secondary='favorite_album', backref='users')
+    def get_id(self):
+        return str(self.id)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -24,39 +28,37 @@ class Song(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     artist = db.Column(db.String(100))
+    song_id = db.Column(db.String(40))
 
 
-# class Album(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(100))
-#     artist = db.Column(db.String(100))
-#
-#
-# # Intermediate table for many-to-many relationship between User and Song
-# favorite_song = db.Table('favorite_song',
-#                          db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-#                          db.Column('song_id', db.Integer, db.ForeignKey('song.id'))
-#                          )
-#
-# # Intermediate table for many-to-many relationship between User and Album
-# favorite_album = db.Table('favorite_album',
-#                           db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-#                           db.Column('album_id', db.Integer, db.ForeignKey('album.id'))
-#                           )
-#
-#
-# class Playlist(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(100))
-#     # Add more playlist-related fields as needed
-#
-#
-# class FavoritePlaylist(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-#     playlist_id = db.Column(db.Integer, db.ForeignKey('playlist.id'))
-#     # Add more fields as needed
-#
-#     # Define relationships
-#     user = db.relationship('User', backref=db.backref('favorite_playlists', lazy=True))
-#     playlist = db.relationship('Playlist', backref=db.backref('favorited_by', lazy=True))
+class FavoriteSong(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    song_id = db.Column(db.Integer, db.ForeignKey('song.id'), primary_key=True)
+
+
+class Artist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    artist_id = db.Column(db.String(40))
+    # Other artist-related fields such as popularity, followers, etc.
+
+
+class FavoriteArtist(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), primary_key=True)
+
+
+class Album(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    artist_name = db.Column(db.String(100))
+    album_id = db.Column(db.String(100))
+    # artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
+    # release_date = db.Column(db.Date)
+    # genre = db.Column(db.String(50))
+    # Other album-related fields such as popularity, track count, etc.
+
+
+class FavoriteAlbum(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    album_id = db.Column(db.Integer, db.ForeignKey('album.id'), primary_key=True)
