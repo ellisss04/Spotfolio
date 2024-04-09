@@ -15,7 +15,6 @@ $(document).ready(function() {
                 data: { query: query },  // Send the query as a parameter
                 success: function(data) {
                     displaySearchResults(data);
-                    // scrollToNextSection();
                 }
             });
         } else {

@@ -13,6 +13,7 @@ $(document).ready(function() {
                 method: 'GET',
                 data: { query: query },
                 success: function(data) {
+                    // console.log(data[0].album.images[0])
                     displaySearchResults(data);
                 }
             });

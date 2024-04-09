@@ -23,11 +23,40 @@
                     {% endfor %}
                 </div>
             </div>
+            <div id="wrapper">
+                <div id="song-input-container">
+                    <input class="album-input" type="text" placeholder="Search for an album...">
+                </div>
+                <div class="content__shows">
+                    <div class="image-box">
+                        <div class="album-info" id="album1">Select album</div>
+                        <img id="song1" class="song-image" src="" alt="Album Cover"/>
+                        <div class="title-box"></div>
+                    </div>
+                    <div class="image-box">
+                        <img id="song2" class="song-image" src="" alt="Album Cover"/>
+                        <div class="title-box"></div>
+                        <div class="album-info" id="album2">Select album</div>
+                    </div>
+                    <div class="image-box">
+                        <img id="song3" class="song-image" src="" alt="Album Cover"/>
+                        <div class="title-box"></div>
+                        <div class="album-info" id="album3">Select album</div>
+                    </div>
+                    <div class="image-box">
+                        <img id="song4" class="song-image" src="" alt="Album Cover"/>
+                        <div class="title-box"></div>
+                        <div class="album-info" id="album4">Select album</div>
+                    </div>
+                </div>
+            </div>
         </div>
     {% else %}
         <div id="Submit" >
             <a class="button-74" href="{{ url_for('setup') }}">SETUP</a>
         </div>
+
     {% endif %}
+
 
 {% endblock content %}

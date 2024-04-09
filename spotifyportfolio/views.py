@@ -114,12 +114,22 @@ def setup_confirm():
 @app.route('/search_track')
 def search_track():
     query = request.args.get('query')
-    print("Received query:", query)  # Add this line for debugging
     if query:
         results = sp.search(q=query, type='track', limit=5)
-        search_results = [{'name': track['name'], 'artist': track['artists'][0]['name'], 'id': track['id']} for
-                          track in
-                          results['tracks']['items']]
+        search_results = []
+        for track in results['tracks']['items']:
+            album_name = track['album']['name']
+            album_images = [image['url'] for image in track['album']['images']]
+            track_data = {
+                'name': track['name'],
+                'artist': track['artists'][0]['name'],
+                'id': track['id'],
+                'album': {
+                    'name': album_name,
+                    'images': album_images
+                }
+            }
+            search_results.append(track_data)
         return jsonify(search_results)
     else:
         return jsonify([])
@@ -130,9 +140,11 @@ def search_album():
     query = request.args.get('query')
     if query:
         results = sp.search(q=query, type='album', limit=5)
-        search_results = [{'name': album['name'], 'artist': album['artists'][0]['name'], 'id': album['id']} for
-                          album in
-                          results['albums']['items']]
+        search_results = []
+        for album in results['albums']['items']:
+            album_details = sp.album(album['id'])
+            image_url = album_details['images'][0]['url'] if album_details['images'] else None
+            search_results.append({'name': album['name'], 'artist': album['artists'][0]['name'], 'id': album['id'], 'image_url': image_url})
         return jsonify(search_results)
     else:
         return jsonify([])
@@ -159,7 +171,8 @@ def favorite_song():
     song_info = {
         'song_name': request.form['song_name'],
         'artist_name': request.form['artist_name'],
-        'song_id': request.form['song_id']
+        'song_id': request.form['song_id'],
+
     }
     if current_user.is_authenticated:
         user_id = current_user.get_id()

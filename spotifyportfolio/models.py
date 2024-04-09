@@ -53,10 +53,6 @@ class Album(db.Model):
     name = db.Column(db.String(100), nullable=False)
     artist_name = db.Column(db.String(100))
     album_id = db.Column(db.String(100))
-    # artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'))
-    # release_date = db.Column(db.Date)
-    # genre = db.Column(db.String(50))
-    # Other album-related fields such as popularity, track count, etc.
 
 
 class FavoriteAlbum(db.Model):

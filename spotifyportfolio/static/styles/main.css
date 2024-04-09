@@ -89,3 +89,106 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
+.square {
+    width: 200px;
+    height: 200px; /* Adjust as needed */
+    background-color: #1b1a1a;
+    border: 1px solid #444444;
+    cursor: pointer;
+}
+
+.square:hover {
+    /*background-color: darkgray;*/
+}
+
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
+
+.content__shows {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: column;
+}
+.content__shows div {
+  position: relative;
+  width: 250px; /* Adjust the width as needed */
+  height: 250px; /* Adjust the height as needed */
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 10px;
+}
+.content__shows div:hover img {
+  transform: scale(1.15);
+}
+
+.image-box{
+  border: 1px solid #444444;
+  width: 250px; /* Set the width of the containing div */
+  height: 250px; /* Set the height of the containing div */
+  display: flex; /* Use flexbox to align items */
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
+}
+
+.album-input{
+  margin-left: 10px;
+}
+
+.content__shows div .title-box {
+  content: "";
+  height: 10px;
+  position: absolute;
+  transform: translatey(50px);
+  transition: 0.3s ease;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), black);
+  width: 100%;
+  z-index: 1;
+}
+.content__shows div img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  transition: 0.3s ease;
+}
+.content__shows div .album-info{
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
+  color: #fff;
+  transform: translateY(85%);
+  padding: 10px;
+  z-index: 10;
+  transition: .3s ease;
+  cursor: default;
+}
+.content__shows div:hover .album-info,
+.content__shows div:hover .title-box {
+  transform: translatey(75%);
+}
+
+.search-container{
+  display: inline-grid;
+  justify-content: center;
+  align-items: center;
+  margin-left: 45px;
+  margin-top: 5px;
+}
+
+.selected {
+    border: 2px solid #1db954; /* Customize the border style as you like */
+}
+
+#wrapper{
+  height: ;
+}
+
