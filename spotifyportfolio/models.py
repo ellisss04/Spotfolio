@@ -53,6 +53,7 @@ class Album(db.Model):
     name = db.Column(db.String(100), nullable=False)
     artist_name = db.Column(db.String(100))
     album_id = db.Column(db.String(100))
+    image_url = db.Column(db.String(255))
 
 
 class FavoriteAlbum(db.Model):

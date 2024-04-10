@@ -201,6 +201,7 @@ def favorite_album():
         'album_name': request.form['album_name'],
         'album_artist': request.form['album_artist'],
         'album_id': request.form['album_id'],
+        'album_img': request.form['album_img']
     }
 
     if current_user.is_authenticated:
@@ -214,7 +215,7 @@ def favorite_album():
             return jsonify({'error': 'User not found'}), 404
 
         if album is None:
-            add_album = Album(name=album_info['album_name'], artist_name=album_info['album_artist'], album_id=album_id)
+            add_album = Album(name=album_info['album_name'], artist_name=album_info['album_artist'], album_id=album_id, image_url=album_info['album_img'])
             db.session.add(add_album)
             db.session.commit()
 
