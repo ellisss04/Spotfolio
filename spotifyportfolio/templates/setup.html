@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../static/styles/searchBar.css">
     <link rel="stylesheet" href="../static/styles/main.css">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Song Selector</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../static/scripts/searchSong.js"></script>
@@ -16,7 +16,6 @@
 
 </head>
 <body>
-
     <div class="title-container">
         <h1 class="title">Select your favourite song</h1>
         <div class="searchInput">
@@ -26,7 +25,7 @@
         <ul id="songResults"></ul>
     </div>
     <!-- Container to display the selected song -->
-    <div class="container-content">
+    <div class="container-content-setup">
         <div id="favourite_song" style="margin-left: 0">
             <iframe src="" width="700" height="300" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         </div>
@@ -41,7 +40,7 @@
         <ul id="albumResults"></ul>
     </div>
         <!-- Container to display the selected album -->
-    <div class="container-content">
+    <div class="container-content-setup">
         <div id="favourite_album" style="margin-left: 0;">
             <iframe src="" width="700" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         </div>
@@ -57,7 +56,7 @@
     </div>
 
         <!-- Container to display the selected album -->
-    <div class="container-content">
+    <div class="container-content-setup">
         <div id="favourite_artist" style="margin-left: 0;">
             <iframe src="" width="700" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         </div>
