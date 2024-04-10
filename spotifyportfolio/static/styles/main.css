@@ -1,5 +1,5 @@
 body {
-  background-image: linear-gradient(120deg, #191414, black);
+  background-image: linear-gradient(90deg, #191414, black);
   color: #333333;
   margin-top: 5rem;
 }
@@ -53,7 +53,10 @@ a.article-title:hover {
 }
 
 .article-content {
-  white-space: pre-line;
+  /*white-space: pre-line;*/
+  width:1300px;
+  height: 100%;
+  margin-top: 150px;
 }
 
 .article-img {
@@ -104,10 +107,6 @@ a.article-title:hover {
     cursor: pointer;
 }
 
-.square:hover {
-    /*background-color: darkgray;*/
-}
-
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
 
@@ -119,11 +118,12 @@ a.article-title:hover {
 }
 .content__shows div {
   position: relative;
-  width: 250px; /* Adjust the width as needed */
-  height: 250px; /* Adjust the height as needed */
+  width: 180px; /* Adjust the width as needed */
+  height: 180px; /* Adjust the height as needed */
   border-radius: 4px;
   overflow: hidden;
   margin: 10px;
+  background-color: black;
 }
 .content__shows div:hover img {
   transform: scale(1.15);
@@ -131,49 +131,41 @@ a.article-title:hover {
 
 .image-box{
   border: 1px solid #444444;
-  width: 250px; /* Set the width of the containing div */
-  height: 250px; /* Set the height of the containing div */
-  display: flex; /* Use flexbox to align items */
-  justify-content: center; /* Center items horizontally */
-  align-items: center; /* Center items vertically */
+  width: 180px;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .album-input{
   margin-left: 10px;
 }
 
-.content__shows div .title-box {
-  content: "";
-  height: 10px;
-  position: absolute;
-  transform: translatey(50px);
-  transition: 0.3s ease;
-  left: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), black);
-  width: 100%;
-  z-index: 1;
-}
+
 .content__shows div img {
+  background-color: transparent;
   object-fit: cover;
   height: 100%;
   width: 100%;
   transition: 0.3s ease;
 }
+
 .content__shows div .album-info{
+  opacity: 70%;
   position: absolute;
   width: 100%;
-  bottom: 10px;
+  height: auto;
+  bottom: -40px;
   color: #fff;
-  transform: translateY(85%);
+  transform: translateY(100%);
   padding: 10px;
   z-index: 10;
   transition: .3s ease;
   cursor: default;
 }
-.content__shows div:hover .album-info,
-.content__shows div:hover .title-box {
-  transform: translatey(75%);
+.content__shows div:hover .album-info{
+  transform: translatey(-25px);
 }
 
 .search-container{
@@ -188,7 +180,25 @@ a.article-title:hover {
     border: 2px solid #1db954; /* Customize the border style as you like */
 }
 
-#wrapper{
-  height: ;
+.leftpane {
+    width: 25%;
+    height: 100%;
+    float: left;
+    border-collapse: collapse;
+}
+
+.middlepane {
+    width: 50%;
+    height: 100%;
+    float: left;
+    border-collapse: collapse;
+}
+
+.rightpane {
+  width: 25%;
+  height: 100%;
+  position: relative;
+  float: right;
+  border-collapse: collapse;
 }
 

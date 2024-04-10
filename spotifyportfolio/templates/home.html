@@ -2,54 +2,54 @@
 {% block content %}
     {% if current_user.is_setup %}
         <div class="article-content">
-            <div class="container-content">
-                <div id="favourite_song">
-                    {% for song_id in song_ids %}
-                    <iframe src="https://open.spotify.com/embed/track/{{ song_id }}" width="700" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="container-content">
-                <div id="favourite_album">
-                    {% for album_id in album_ids %}
-                    <iframe src="https://open.spotify.com/embed/album/{{ album_id }}" width="700" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="container-content">
-                <div id="favourite_artist">
-                    {% for artist_id in artist_ids %}
-                    <iframe src="https://open.spotify.com/embed/artist/{{ artist_id }}" width="700" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-                    {% endfor %}
-                </div>
-            </div>
-            <div id="wrapper">
+            <div class="leftpane">
                 <div id="song-input-container">
                     <input class="album-input" type="text" placeholder="Search for an album...">
                 </div>
+                <button id="submit-btn" class="button-34">Submit</button>
                 <div class="content__shows">
                     <div class="image-box">
+                        <img id="song1" class="song-image" src="" />
                         <div class="album-info" id="album1">Select album</div>
-                        <img id="song1" class="song-image" src="" alt="Album Cover"/>
-                        <div class="title-box"></div>
                     </div>
                     <div class="image-box">
-                        <img id="song2" class="song-image" src="" alt="Album Cover"/>
-                        <div class="title-box"></div>
+                        <img id="song2" class="song-image" src="" />
                         <div class="album-info" id="album2">Select album</div>
                     </div>
                     <div class="image-box">
-                        <img id="song3" class="song-image" src="" alt="Album Cover"/>
-                        <div class="title-box"></div>
+                        <img id="song3" class="song-image" src="" />
                         <div class="album-info" id="album3">Select album</div>
                     </div>
                     <div class="image-box">
-                        <img id="song4" class="song-image" src="" alt="Album Cover"/>
-                        <div class="title-box"></div>
+                        <img id="song4" class="song-image" src="" />
                         <div class="album-info" id="album4">Select album</div>
                     </div>
                 </div>
             </div>
+            <div class="middlepane">
+                <div class="container-content">
+                    <div id="favourite_song">
+                        {% for song_id in song_ids %}
+                        <iframe src="https://open.spotify.com/embed/track/{{ song_id }}" width="400" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="container-content">
+                    <div id="favourite_album">
+                        {% for album_id in album_ids %}
+                        <iframe src="https://open.spotify.com/embed/album/{{ album_id }}" width="400" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="container-content">
+                    <div id="favourite_artist">
+                        {% for artist_id in artist_ids %}
+                        <iframe src="https://open.spotify.com/embed/artist/{{ artist_id }}" width="400" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="rightpane"></div>
         </div>
     {% else %}
         <div id="Submit" >

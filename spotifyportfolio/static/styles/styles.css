@@ -10,10 +10,21 @@ body{
 }
 
 .container-content{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-    width: 100%;
+    float: left;
+    margin-right: 20px; /* Adjust margin according to your layout */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-block-end: 75px;
+}
+
+.container-content-setup{
+    margin-right: 20px; /* Adjust margin according to your layout */
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-block-end: 75px;
 }
 
 

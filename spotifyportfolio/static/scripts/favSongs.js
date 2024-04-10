@@ -3,10 +3,9 @@ $(document).ready(function() {
 
     function setupSearch() {
         const $inputContainer = $('#song-input-container');
-        const $input = $inputContainer.find('.song-input');
-
-        $input.on('input', function() {
-            const query = $(this).val();
+        const $input = $inputContainer.find('.album-input');
+        $("#submit-btn").on("click", function() {
+            const query = $input.val();
             if (query.length > 2 && selectedBoxIndex !== null) {
                 $.ajax({
                     url: '/search_track',
@@ -31,9 +30,14 @@ $(document).ready(function() {
         $box.on("click", function() {
             $(".image-box").removeClass("selected"); // Remove the class from all boxes
             $(this).addClass("selected"); // Add the class to the selected box
+            $(".album-input").val("").focus();
+            $(".album-input").keydown(function(event) {
+                if (event.keyCode === 13) { // Check if Enter key is pressed
+                    $('#submit-btn').click(); // Trigger submit button click
+                }
+            });
             selectedBoxIndex = boxIndex;
         });
-
         setupSearch();
     });
 });
