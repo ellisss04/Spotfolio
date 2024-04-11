@@ -6,7 +6,7 @@
         </div>
         <div class="article-content">
             <div class="leftpane">
-                <div id="song-input-container">
+                <div id="album-input-container">
                     <input class="album-input" type="text" placeholder="Search for an album...">
                 </div>
                 <button id="submit-btn" class="button-34">Submit</button>
@@ -40,7 +40,7 @@
                 <div class="container-content">
                     <div id="favourite_album">
                         {% for album_id in album_ids %}
-                        <iframe src="https://open.spotify.com/embed/album/{{ album_id }}" width="400" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                            <iframe src="https://open.spotify.com/embed/album/{{ album_id }}" width="400" height="152" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                         {% endfor %}
                     </div>
                 </div>

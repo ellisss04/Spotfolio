@@ -2,18 +2,20 @@ $(document).ready(function() {
     let selectedBoxIndex = null;
 
     function setupSearch() {
-        const $inputContainer = $('#song-input-container');
+        const $inputContainer = $('#album-input-container');
         const $input = $inputContainer.find('.album-input');
         $("#submit-btn").on("click", function() {
             const query = $input.val();
             if (query.length > 2 && selectedBoxIndex !== null) {
                 $.ajax({
-                    url: '/search_track',
+                    url: '/search_album',
                     method: 'GET',
-                    data: {query: query},
+                    data: {query: query, limit: 1},
                     success: function(data) {
-                        const image_link = data[0].album.images[0];
-                        const album_info = (data[0].artist + "-" + data[0].album.name);
+                        // deleteAlbum(data);
+                        // saveAlbum(data);
+                        const image_link = data[0].image_url;
+                        const album_info = (data[0].artist + "-" + data[0].name);
                         $('#album' + selectedBoxIndex).text(album_info);
                         $('#song' + selectedBoxIndex).attr('src', image_link);
                     }
@@ -40,4 +42,37 @@ $(document).ready(function() {
         });
         setupSearch();
     });
+    function saveAlbum(results) {
+        const album_id = results[0].id;
+        $.ajax({
+            url: '/save_album',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ album_id: album_id }), // Send the album ID in JSON format
+            success: function(response) {
+                console.log(response.message);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    function deleteAlbum(results) {
+        const album_id = results[0].id;
+        $.ajax({
+            url: '/delete_album',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ album_id: album_id }), // Send the album ID in JSON format
+            success: function(response) {
+                console.log(response.message);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
 });
+
+
