@@ -34,18 +34,19 @@ class Song(db.Model):
 class FavoriteSong(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     song_id = db.Column(db.Integer, db.ForeignKey('song.id'), primary_key=True)
+    is_favourite = db.Column(db.Boolean, default=False, nullable=False)
 
 
 class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     artist_id = db.Column(db.String(40))
-    # Other artist-related fields such as popularity, followers, etc.
 
 
 class FavoriteArtist(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     artist_id = db.Column(db.Integer, db.ForeignKey('artist.id'), primary_key=True)
+    is_favourite = db.Column(db.Boolean, default=False, nullable=False)
 
 
 class Album(db.Model):
@@ -53,8 +54,10 @@ class Album(db.Model):
     name = db.Column(db.String(100), nullable=False)
     artist_name = db.Column(db.String(100))
     album_id = db.Column(db.String(100))
+    image_url = db.Column(db.String(255))
 
 
 class FavoriteAlbum(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     album_id = db.Column(db.Integer, db.ForeignKey('album.id'), primary_key=True)
+    is_favourite = db.Column(db.Boolean, default=False, nullable=False)

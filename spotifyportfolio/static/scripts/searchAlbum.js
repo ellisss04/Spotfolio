@@ -12,7 +12,7 @@ $(document).ready(function() {
             $.ajax({
                 url: '/search_album',
                 method: 'GET',
-                data: { query: query },  // Send the query as a parameter
+                data: { query: query, limit: 5 },  // Send the query as a parameter
                 success: function(data) {
                     displaySearchResults(data);
                 }
@@ -34,7 +34,8 @@ $(document).ready(function() {
                     data: {
                         album_name: result.name,  // Pass the album name
                         album_artist: result.artist,
-                        album_id: result.id       // Pass the album ID
+                        album_id: result.id,       // Pass the album ID
+                        album_img: result.image_url
                     },
                     success: function(response) {
                         // Update the content with the response from favourite_album route
