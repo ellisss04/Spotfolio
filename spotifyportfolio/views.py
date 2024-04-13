@@ -22,7 +22,7 @@ def home():
         favorite_songs = FavoriteSong.query.filter_by(user_id=current_user.id).all()
         song_ids = [favorite.song_id for favorite in favorite_songs]
 
-        favorite_albums = FavoriteAlbum.query.filter_by(user_id=current_user.id).all()
+        favorite_albums = FavoriteAlbum.query.filter_by(user_id=current_user.id, is_favourite=True).all()
         album_ids = [favorite.album_id for favorite in favorite_albums]
 
         favorite_artists = FavoriteArtist.query.filter_by(user_id=current_user.id).all()
@@ -94,7 +94,7 @@ def setup_confirm():
         for favourite_song in favourite_songs:
             db.session.delete(favourite_song)
 
-        favourite_albums = FavoriteAlbum.query.filter_by(user_id=current_user.id).all()
+        favourite_albums = FavoriteAlbum.query.filter_by(user_id=current_user.id, is_favourite=True).all()
         for favourite_album in favourite_albums:
             db.session.delete(favourite_album)
 
@@ -272,6 +272,7 @@ def submit_setup():
         db.session.add(favorite_album)
         favorite_artist = FavoriteArtist(user_id=user_id, artist_id=artist_id, is_favourite=True)
         db.session.add(favorite_artist)
+
         db.session.commit()
     else:
         session.clear()
@@ -289,10 +290,12 @@ def save_album():
         }
         user_id = current_user.get_id()
         album_exists = Album.query.filter_by(album_id=album_info['album_id']).first()
+
         if not album_exists:
             new_album = Album(name=album_info['album_name'], artist_name=album_info['album_artist'],
-                              album_id=album_info['album_id'], image_url=[album_info['album_img']])
+                              album_id=album_info['album_id'], image_url=album_info['album_img'])
             db.session.add(new_album)
+
         new_favorite_album = FavoriteAlbum(user_id=user_id, album_id=album_info['album_id'], is_favourite=False)
         db.session.add(new_favorite_album)
 
@@ -301,20 +304,19 @@ def save_album():
     else:
         return jsonify({'error': 'Method not allowed'}), 405
 
+
 @app.route('/delete_album', methods=['POST'])
 def delete_album():
     if request.method == 'POST':
-        album_info = {
-            'album_name': request.form['album_name'],
-            'album_artist': request.form['album_artist'],
-            'album_id': request.form['album_id'],
-            'album_img': request.form['album_img']
-        }
-        user_id = current_user.get_id()
-        deleted_album = FavoriteAlbum.query.filter_by(user_id=user_id, album_id=album_info['album_id'],
-                                                      is_favourite=False).first()
-        db.session.add(deleted_album)
-        db.session.commit()
+        image_url = request.form['image_url']
+
+        album = Album.query.filter_by(image_url=image_url).first()
+        if album:
+            deleted_album = FavoriteAlbum.query.filter_by(album_id=album.album_id, user_id=current_user.id).first()
+            db.session.delete(deleted_album)
+            db.session.commit()
+        else:
+            return jsonify({'error': 'Method not allowed'}), 405
 
         return jsonify({'message': 'Album deleted successfully'}), 200
     else:

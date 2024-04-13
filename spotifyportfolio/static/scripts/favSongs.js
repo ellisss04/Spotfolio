@@ -12,8 +12,9 @@ $(document).ready(function() {
                     method: 'GET',
                     data: {query: query, limit: 1},
                     success: function(data) {
-                        // deleteAlbum(data);
-                        // saveAlbum(data);
+                        // delete album based on the album name in the text
+                        deleteAlbum();
+                        saveAlbum(data);
                         const image_link = data[0].image_url;
                         const album_info = (data[0].artist + "-" + data[0].name);
                         $('#album' + selectedBoxIndex).text(album_info);
@@ -40,15 +41,17 @@ $(document).ready(function() {
             });
             selectedBoxIndex = boxIndex;
         });
-        setupSearch();
     });
-    function saveAlbum(results) {
-        const album_id = results[0].id;
+    function saveAlbum(result) {
         $.ajax({
             url: '/save_album',
             method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ album_id: album_id }), // Send the album ID in JSON format
+            data: {
+                album_name: result[0].name,  // Pass the album name
+                album_artist: result[0].artist,
+                album_id: result[0].id,       // Pass the album ID
+                album_img: result[0].image_url
+            },
             success: function(response) {
                 console.log(response.message);
             },
@@ -58,21 +61,28 @@ $(document).ready(function() {
         });
     }
 
-    function deleteAlbum(results) {
-        const album_id = results[0].id;
-        $.ajax({
+    function deleteAlbum() {
+        const image_url = document.getElementById(('song' + selectedBoxIndex)).getAttribute('src');
+        if (image_url !== ""){
+            $.ajax({
             url: '/delete_album',
             method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ album_id: album_id }), // Send the album ID in JSON format
+            data: {image_url: image_url},
             success: function(response) {
                 console.log(response.message);
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
             }
+
         });
+        }
+        else{
+            return 0
+        }
+
     }
+    setupSearch();
 });
 
 
