@@ -1,14 +1,12 @@
-import flask_login
-
 from spotifyportfolio import app, bcrypt
 from spotifyportfolio import sp, sp_oauth
 
-from flask import render_template, redirect, url_for, request, session, jsonify, flash, logging
+from flask import render_template, redirect, url_for, request, session, jsonify, flash
 from spotifyportfolio import cache_handler
 from spotifyportfolio.forms import RegistrationForm, LoginForm
-from spotifyportfolio.models import User, Song, FavoriteSong, load_user, FavoriteAlbum, Album, Artist, FavoriteArtist
+from spotifyportfolio.models import User, Song, FavoriteSong,  FavoriteAlbum, Album, Artist, FavoriteArtist
 
-from flask_login import login_user, current_user, logout_user, login_required
+from flask_login import login_user, current_user
 
 from spotifyportfolio import db
 
@@ -19,18 +17,27 @@ def home():
         auth_url = sp_oauth.get_authorize_url()
         return redirect(auth_url)
     if current_user.is_authenticated:
-        favorite_songs = FavoriteSong.query.filter_by(user_id=current_user.id).all()
-        song_ids = [favorite.song_id for favorite in favorite_songs]
-
-        favorite_albums = FavoriteAlbum.query.filter_by(user_id=current_user.id, is_favourite=True).all()
-        album_ids = [favorite.album_id for favorite in favorite_albums]
-
-        favorite_artists = FavoriteArtist.query.filter_by(user_id=current_user.id).all()
-        artist_ids = [favorite.artist_id for favorite in favorite_artists]
-        return render_template('home.html', song_ids=song_ids, album_ids=album_ids, artist_ids=artist_ids)
+        return redirect(url_for('get_info'))
     else:
         # Handle the case where the user is not authenticated
         return render_template('home.html')
+
+
+@app.route('/get_info')
+def get_info():
+    favorite_songs = FavoriteSong.query.filter_by(user_id=current_user.id).all()
+    song_ids = [favorite.song_id for favorite in favorite_songs]
+
+    favorite_albums = FavoriteAlbum.query.filter_by(user_id=current_user.id, is_favourite=True).all()
+    album_ids = [favorite.album_id for favorite in favorite_albums]
+
+    favorite_artists = FavoriteArtist.query.filter_by(user_id=current_user.id).all()
+    artist_ids = [favorite.artist_id for favorite in favorite_artists]
+
+    favorite_selected = FavoriteAlbum.query.filter_by(user_id=current_user.id, is_favourite=False).all()
+
+    return render_template('home.html', song_ids=song_ids, album_ids=album_ids, artist_ids=artist_ids,
+                           favorite_selected=favorite_selected)
 
 
 @app.route('/callback')
@@ -296,8 +303,14 @@ def save_album():
                               album_id=album_info['album_id'], image_url=album_info['album_img'])
             db.session.add(new_album)
 
-        new_favorite_album = FavoriteAlbum(user_id=user_id, album_id=album_info['album_id'], is_favourite=False)
-        db.session.add(new_favorite_album)
+        new_album_exists = FavoriteAlbum.query.filter_by(user_id=user_id, album_id=album_info['album_id'],
+                                                         is_favourite=False)
+        if not new_album_exists:
+            new_favorite_album = FavoriteAlbum(user_id=user_id, album_id=album_info['album_id'], is_favourite=False)
+            db.session.add(new_favorite_album)
+        else:
+            db.session.commit()
+            return jsonify({'message': 'Album already selected'})
 
         db.session.commit()
         return jsonify({'message': 'Album saved successfully'}), 200
@@ -309,16 +322,19 @@ def save_album():
 def delete_album():
     if request.method == 'POST':
         image_url = request.form['image_url']
+        if image_url is None:
+            return jsonify({'error': 'Method not allowed'}), 405
+
 
         album = Album.query.filter_by(image_url=image_url).first()
         if album:
             deleted_album = FavoriteAlbum.query.filter_by(album_id=album.album_id, user_id=current_user.id).first()
             db.session.delete(deleted_album)
             db.session.commit()
+            return jsonify({'message': 'Album deleted successfully'}), 200
         else:
             return jsonify({'error': 'Method not allowed'}), 405
 
-        return jsonify({'message': 'Album deleted successfully'}), 200
     else:
         return jsonify({'error': 'Method not allowed'}), 405
 
