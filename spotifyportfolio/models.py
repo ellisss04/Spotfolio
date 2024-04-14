@@ -1,3 +1,5 @@
+from sqlalchemy import PrimaryKeyConstraint
+
 from spotifyportfolio import db
 from flask_login import UserMixin
 from spotifyportfolio import db, login_manager
@@ -32,9 +34,15 @@ class Song(db.Model):
 
 
 class FavoriteSong(db.Model):
+    __tablename__ = 'favorite_song'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     song_id = db.Column(db.Integer, db.ForeignKey('song.id'), primary_key=True)
     is_favourite = db.Column(db.Boolean, default=False, nullable=False)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('user_id', 'song_id'),
+        {},
+    )
 
 
 class Artist(db.Model):
@@ -58,6 +66,12 @@ class Album(db.Model):
 
 
 class FavoriteAlbum(db.Model):
+    __tablename__ = 'favorite_album'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     album_id = db.Column(db.Integer, db.ForeignKey('album.id'), primary_key=True)
     is_favourite = db.Column(db.Boolean, default=False, nullable=False)
+
+    __table_args__ = (
+        PrimaryKeyConstraint('user_id', 'album_id'),
+        {},
+    )
