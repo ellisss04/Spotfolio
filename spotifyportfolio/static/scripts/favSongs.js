@@ -1,5 +1,6 @@
 $(document).ready(function() {
     let selectedBoxIndex = null;
+    setupSearch();
 
     function setupSearch() {
         const $inputContainer = $('#album-input-container');
@@ -12,9 +13,10 @@ $(document).ready(function() {
                     method: 'GET',
                     data: {query: query, limit: 1},
                     success: function(data) {
-                        // delete album based on the album name in the text
                         deleteAlbum();
+                        console.log('after delete()');
                         saveAlbum(data);
+                        console.log('after save()');
                         const image_link = data[0].image_url;
                         const album_info = (data[0].artist + "-" + data[0].name);
                         $('#album' + selectedBoxIndex).text(album_info);
@@ -63,6 +65,7 @@ $(document).ready(function() {
 
     function deleteAlbum() {
         const image_url = document.getElementById(('song' + selectedBoxIndex)).getAttribute('src');
+        console.log('image url=' + image_url);
         if (image_url !== ""){
             $.ajax({
             url: '/delete_album',
@@ -82,7 +85,6 @@ $(document).ready(function() {
         }
 
     }
-    setupSearch();
 });
 
 

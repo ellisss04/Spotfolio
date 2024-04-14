@@ -17,13 +17,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     is_setup = db.Column(db.Boolean, default=False, nullable=False)
 
-    # favorite_songs = db.relationship('Song', secondary='favorite_song', backref='users')
-    # favorite_albums = db.relationship('Album', secondary='favorite_album', backref='users')
     def get_id(self):
         return str(self.id)
-
-    def __repr__(self):
-        return f"User('{self.username}', '{self.email}')"
 
 
 class Song(db.Model):
