@@ -4,7 +4,7 @@ from spotifyportfolio import sp, sp_oauth
 from flask import render_template, redirect, url_for, request, session, jsonify, flash
 from spotifyportfolio import cache_handler
 from spotifyportfolio.forms import RegistrationForm, LoginForm
-from spotifyportfolio.models import User, Song, FavoriteSong,  FavoriteAlbum, Album, Artist, FavoriteArtist
+from spotifyportfolio.models import User, Song, FavoriteSong, FavoriteAlbum, Album, Artist, FavoriteArtist
 
 from flask_login import login_user, current_user
 
@@ -25,6 +25,7 @@ def home():
 
 @app.route('/get_info')
 def get_info():
+
     favorite_songs = FavoriteSong.query.filter_by(user_id=current_user.id).all()
     song_ids = [favorite.song_id for favorite in favorite_songs]
 
@@ -35,6 +36,8 @@ def get_info():
     artist_ids = [favorite.artist_id for favorite in favorite_artists]
 
     favorite_selected = FavoriteAlbum.query.filter_by(user_id=current_user.id, is_favourite=False).all()
+    if not favorite_selected:
+        favorite_selected = ["", "", "", ""]
 
     return render_template('home.html', song_ids=song_ids, album_ids=album_ids, artist_ids=artist_ids,
                            favorite_selected=favorite_selected)
@@ -166,7 +169,7 @@ def search_artist():
     if query:
         results = sp.search(q=query, type='artist', limit=5)
 
-        search_results = [{'artist': artist['name'],  'id': artist['id']} for
+        search_results = [{'artist': artist['name'], 'id': artist['id']} for
                           artist in
                           results['artists']['items']]
         return jsonify(search_results)
@@ -271,7 +274,7 @@ def submit_setup():
         song_id = session['song_id']
         artist_id = session['artist_id']
 
-        current_user.is_setup = True
+        # current_user.is_setup = True
 
         favorite_song = FavoriteSong(user_id=user_id, song_id=song_id, is_favourite=True)
         db.session.add(favorite_song)
@@ -304,7 +307,7 @@ def save_album():
             db.session.add(new_album)
 
         new_album_exists = FavoriteAlbum.query.filter_by(user_id=user_id, album_id=album_info['album_id'],
-                                                         is_favourite=False)
+                                                         is_favourite=False).first()
         if not new_album_exists:
             new_favorite_album = FavoriteAlbum(user_id=user_id, album_id=album_info['album_id'], is_favourite=False)
             db.session.add(new_favorite_album)
@@ -325,18 +328,17 @@ def delete_album():
         if image_url is None:
             return jsonify({'error': 'Method not allowed'}), 405
 
-
         album = Album.query.filter_by(image_url=image_url).first()
         if album:
             deleted_album = FavoriteAlbum.query.filter_by(album_id=album.album_id, user_id=current_user.id).first()
-            db.session.delete(deleted_album)
-            db.session.commit()
-            return jsonify({'message': 'Album deleted successfully'}), 200
+            if deleted_album:
+                db.session.delete(deleted_album)
+                db.session.commit()
+                return jsonify({'message': 'Album deleted successfully'}), 200
+            else:
+                return jsonify({'error': 'Favorite album entry not found'}), 404
         else:
-            return jsonify({'error': 'Method not allowed'}), 405
-
-    else:
-        return jsonify({'error': 'Method not allowed'}), 405
+            return jsonify({'error': 'Album not found'}), 404
 
 
 @app.route('/logout')
