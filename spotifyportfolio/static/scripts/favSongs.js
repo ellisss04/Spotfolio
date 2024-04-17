@@ -14,9 +14,7 @@ $(document).ready(function() {
                     data: {query: query, limit: 1},
                     success: function(data) {
                         deleteAlbum();
-                        console.log('after delete()');
                         saveAlbum(data);
-                        console.log('after save()');
                         const image_link = data[0].image_url;
                         const album_info = (data[0].artist + "-" + data[0].name);
                         $('#album' + selectedBoxIndex).text(album_info);
@@ -45,6 +43,8 @@ $(document).ready(function() {
         });
     });
     function saveAlbum(result) {
+        console.log('saveAlbum()');
+        console.log(result);
         $.ajax({
             url: '/save_album',
             method: 'POST',
@@ -65,13 +65,14 @@ $(document).ready(function() {
 
     function deleteAlbum() {
         const image_url = document.getElementById(('song' + selectedBoxIndex)).getAttribute('src');
-        console.log('image url=' + image_url);
         if (image_url !== ""){
+            console.log('image url=' + image_url);
             $.ajax({
             url: '/delete_album',
             method: 'POST',
             data: {image_url: image_url},
             success: function(response) {
+                console.log("delteAlbum()");
                 console.log(response.message);
             },
             error: function(xhr, status, error) {
